@@ -3,6 +3,8 @@
 ## 🛠️ STATUS DO PROJETO
 **✅ PROJETO COMPLETO - Pronto para uso e avaliação**
 
+> 📖 **Para continuar em nova sessão**: Leia [CONTEXTO_PROJETO.md](CONTEXTO_PROJETO.md) - contém o estado completo do projeto e prompt para nova sessão do Copilot.
+
 ## 🎯 Objetivo Principal
 Desenvolver um modelo de Machine Learning (Classificação Multiclasse) para prever os níveis de obesidade de pacientes. A solução deve atingir mais de **75% de acurácia** e ser entregue com uma aplicação preditiva em **Streamlit** e um **Dashboard Analítico** para a equipe médica.
 
