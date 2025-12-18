@@ -36,6 +36,7 @@ PADRÕES TÉCNICOS:
 ARQUIVOS DE REFERÊNCIA:
 - CONTEXTO_PROJETO.md (estado completo do projeto)
 - DOCUMENTACAO_TECNICA.md (detalhes técnicos)
+- notebooks/00_GUIA_ANALISE.ipynb (contexto analítico e metodologia)
 - README.md (setup e instalação)
 
 Leia CONTEXTO_PROJETO.md para detalhes completos antes de começar.
