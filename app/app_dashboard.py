@@ -249,8 +249,11 @@ with tab2:
     numeric_cols = df_filtered.select_dtypes(include=[np.number]).columns
     corr_matrix = df_filtered[numeric_cols].corr()
     
+    # Rename columns and index to Portuguese
+    corr_matrix_pt = corr_matrix.rename(columns=get_variable_name, index=get_variable_name)
+    
     fig5 = px.imshow(
-        corr_matrix,
+        corr_matrix_pt,
         title='Matriz de Correlação - Variáveis Numéricas',
         color_continuous_scale='RdBu_r',
         aspect='auto',
@@ -354,19 +357,22 @@ with tab3:
         st.plotly_chart(fig9, use_container_width=True)
     
     # Faixas etárias
-    df_filtered['Age_Group'] = pd.cut(
+    df_filtered['Faixa Etária'] = pd.cut(
         df_filtered['Age'],
         bins=[0, 20, 30, 40, 50, 100],
         labels=['<20', '20-30', '30-40', '40-50', '50+']
     )
     
-    age_obesity = pd.crosstab(df_filtered['Age_Group'], df_filtered['Obesity'], normalize='index') * 100
+    age_obesity = pd.crosstab(df_filtered['Faixa Etária'], df_filtered['Obesity'], normalize='index') * 100
+    # Translate obesity types to Portuguese
+    age_obesity.columns = [get_obesity_label(col) for col in age_obesity.columns]
     
     fig10 = px.bar(
         age_obesity,
         title='Distribuição de Obesidade por Faixa Etária (%)',
         barmode='stack',
-        color_discrete_sequence=px.colors.qualitative.Pastel
+        color_discrete_sequence=px.colors.qualitative.Pastel,
+        labels={'value': 'Percentual (%)', 'variable': 'Nível de Obesidade', 'Faixa Etária': 'Faixa Etária'}
     )
     fig10.update_layout(height=400)
     st.plotly_chart(fig10, use_container_width=True)
@@ -516,7 +522,7 @@ with col2:
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #888;">
-    <p>Tech Challenge Fase 4 - POSTECH Data Analytics</p>
+    <p>Tech Challenge Fase 4 - POSTECH Data Analytics - 9DTAT</p>
     <p>Dashboard Analítico de Obesidade | Desenvolvido usando Streamlit</p>
 </div>
 """, unsafe_allow_html=True)

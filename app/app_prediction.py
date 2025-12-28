@@ -364,7 +364,7 @@ if submit_button:
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #888;">
-    <p>Tech Challenge Fase 4 - POSTECH Data Analytics</p>
-    <p>Sistema de Predição de Obesidade | Desenvolvido com ❤️ usando Streamlit</p>
+    <p>Tech Challenge Fase 4 - POSTECH Data Analytics - 9DTAT</p>
+    <p>Sistema de Predição de Obesidade | Desenvolvido usando Streamlit</p>
 </div>
 """, unsafe_allow_html=True)

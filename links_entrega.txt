@@ -1,6 +1,13 @@
 TECH CHALLENGE FASE 4 - PREDIÇÃO DE OBESIDADE
-POSTECH Data Analytics
-Aluno: Nykolas Vieira Albino dos Santos
+POSTECH Data Analytics - 9DTAT
+
+Grupo:
+- Thiago Cesar Silva
+- Vitor da Silva Ammari
+- João Marcos Marques Messias
+- João Pedro de Jesus
+- Nykolas Vieira Albino dos Santos
+
 Data: 28/12/2025
 
 ==============================================
@@ -8,13 +15,13 @@ LINKS DO PROJETO
 ==============================================
 
 1. APLICAÇÃO PREDITIVA (Streamlit):
-   [AGUARDANDO DEPLOY]
+   https://fiap-tech-challenge-fase4-prediction.streamlit.app/
    
 2. PAINEL ANALÍTICO (Dashboard):
-   [AGUARDANDO DEPLOY]
+   https://fiap-tech-challenge-fase4-dashboard.streamlit.app/
    
 3. REPOSITÓRIO GITHUB:
-   [AGUARDANDO CRIAÇÃO]
+   https://github.com/nykosx/fiap-tech-challenge-fase4
 
 ==============================================
 COMO EXECUTAR LOCALMENTE
@@ -106,9 +113,15 @@ TRABALHOS FUTUROS
 - Testes automatizados com CI/CD
 
 ==============================================
-CONTATO
+GRUPO
 ==============================================
 
-Nome: Nykolas Vieira Albino dos Santos
-Turma: POSTECH Data Analytics
+Turma: POSTECH Data Analytics - 9DTAT
 Tech Challenge: Fase 4
+
+Integrantes:
+- Thiago Cesar Silva
+- Vitor da Silva Ammari
+- João Marcos Marques Messias
+- João Pedro de Jesus
+- Nykolas Vieira Albino dos Santos

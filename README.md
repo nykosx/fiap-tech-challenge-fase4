@@ -348,11 +348,17 @@ pip install -r requirements.txt --upgrade
 - [ ] **Gamificação**: Sistema de pontos/badges para engajar usuários
 - [ ] **Integração com Wearables**: Fitbit, Apple Watch, etc.
 
-## 👥 Autor
+## 👥 Grupo
 
-**Nykolas Vieira Albino dos Santos**  
-POSTECH - Data Analytics  
+**POSTECH Data Analytics - 9DTAT**  
 Tech Challenge - Fase 4
+
+**Integrantes:**
+- Thiago Cesar Silva
+- Vitor da Silva Ammari
+- João Marcos Marques Messias
+- João Pedro de Jesus
+- Nykolas Vieira Albino dos Santos
 
 ## 📄 Licença
 
@@ -360,4 +366,4 @@ Este projeto foi desenvolvido para fins educacionais como parte do Tech Challeng
 
 ---
 
-**Desenvolvido para o Tech Challenge Fase 4 - POSTECH Data Analytics**
+**Desenvolvido para o Tech Challenge Fase 4 - POSTECH Data Analytics - 9DTAT**

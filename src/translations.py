@@ -20,30 +20,30 @@ ACCENT_COLOR = '#8b3a3a'       # Vermelho escuro/bordô
 VARIABLE_NAMES = {
     # Informações demográficas
     'Gender': 'Gênero',
-    'Age': 'Idade (anos)',
+    'Age': 'Idade',
     
     # Medidas físicas
-    'Height': 'Altura (m)',
-    'Weight': 'Peso (kg)',
-    'BMI': 'IMC (kg/m²)',
+    'Height': 'Altura',
+    'Weight': 'Peso',
+    'BMI': 'IMC',
     
     # Histórico e genética
     'family_history': 'Histórico Familiar de Obesidade',
     
     # Hábitos alimentares
     'FAVC': 'Consumo de Alimentos Calóricos',
-    'FCVC': 'Frequência de Consumo de Vegetais',
-    'NCP': 'Nº de Refeições Principais',
+    'FCVC': 'Consumo de Vegetais',
+    'NCP': 'Refeições Principais por Dia',
     'CAEC': 'Consumo Entre Refeições',
     
     # Hábitos de saúde
     'SMOKE': 'Fumante',
-    'CH2O': 'Consumo de Água Diário (Litros)',
+    'CH2O': 'Consumo de Água',
     'SCC': 'Monitora Calorias',
     
     # Atividade física
-    'FAF': 'Frequência de Atividade Física (semanal)',
-    'TUE': 'Tempo Diário em Dispositivos Eletrônicos (h)',
+    'FAF': 'Atividade Física',
+    'TUE': 'Tempo em Telas',
     
     # Outros hábitos
     'CALC': 'Consumo de Álcool',
@@ -59,10 +59,10 @@ VARIABLE_DESCRIPTIONS = {
     'Age': 'Idade em anos',
     'Height': 'Altura em metros',
     'Weight': 'Peso em quilogramas',
-    'BMI': 'Índice de Massa Corporal (kg/m²)',
+    'BMI': 'Índice de Massa Corporal',
     'family_history': 'Histórico familiar de excesso de peso',
     'FAVC': 'Consumo frequente de alimentos muito calóricos',
-    'FCVC': 'Frequência de consumo de vegetais nas refeições (escala 1-3: raramente/às vezes/sempre)',
+    'FCVC': 'Frequência de consumo de vegetais nas refeições',
     'NCP': 'Número de refeições principais por dia',
     'CAEC': 'Consumo de lanches/comidas entre as refeições',
     'SMOKE': 'Hábito de fumar',
@@ -70,7 +70,7 @@ VARIABLE_DESCRIPTIONS = {
     'SCC': 'Monitora a ingestão calórica diária',
     'FAF': 'Frequência semanal de atividade física',
     'TUE': 'Tempo diário usando dispositivos eletrônicos',
-    'CALC': 'Consumo de bebida alcoólica',
+    'CALC': 'Consumo de bebidas alcoólicas',
     'MTRANS': 'Meio de transporte habitual',
     'Obesity': 'Classe de peso corporal / Nível de obesidade'
 }
