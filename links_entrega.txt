@@ -1,0 +1,114 @@
+TECH CHALLENGE FASE 4 - PREDIÇÃO DE OBESIDADE
+POSTECH Data Analytics
+Aluno: Nykolas Vieira Albino dos Santos
+Data: 28/12/2025
+
+==============================================
+LINKS DO PROJETO
+==============================================
+
+1. APLICAÇÃO PREDITIVA (Streamlit):
+   [AGUARDANDO DEPLOY]
+   
+2. PAINEL ANALÍTICO (Dashboard):
+   [AGUARDANDO DEPLOY]
+   
+3. REPOSITÓRIO GITHUB:
+   [AGUARDANDO CRIAÇÃO]
+
+==============================================
+COMO EXECUTAR LOCALMENTE
+==============================================
+
+1. Clone o repositório:
+   git clone [URL DO GITHUB]
+   cd fiap-tech-challenge-fase4
+
+2. Instale as dependências:
+   pip install -r requirements.txt
+
+3. Execute as aplicações:
+   
+   # Aplicação de Predição:
+   streamlit run app/app_prediction.py
+   
+   # Dashboard Analítico:
+   streamlit run app/app_dashboard.py
+
+4. Execute os testes (opcional):
+   python tests/test_model.py
+
+==============================================
+RESUMO TÉCNICO DO PROJETO
+==============================================
+
+📊 DATASET:
+- Fonte: Obesity.csv
+- Registros: 2111 pacientes
+- Features: 17 variáveis (demográficas, hábitos, estilo de vida)
+- Classes: 7 níveis de obesidade
+
+🤖 MODELO:
+- Algoritmo: Random Forest (otimizado)
+- Acurácia: 99.05% (Meta: >75%)
+- Validação: Cross-validation 5-fold
+- Features mais importantes: BMI, Weight, Height, Age
+
+💻 APLICAÇÕES:
+1. App de Predição:
+   - Interface interativa para entrada de dados
+   - Predição em tempo real
+   - Recomendações personalizadas
+   - Validação robusta de entrada
+
+2. Dashboard Analítico:
+   - Análise demográfica completa
+   - Insights sobre hábitos alimentares
+   - Performance do modelo
+   - Visualizações interativas (Plotly)
+
+📁 ESTRUTURA DO PROJETO:
+- /notebooks: EDA + Training
+- /app: Streamlit apps (predição + dashboard)
+- /models: Artefatos do modelo (.pkl)
+- /src: Módulo de traduções
+- /tests: Testes automatizados
+- /data: Dataset original
+
+==============================================
+PRINCIPAIS INSIGHTS
+==============================================
+
+1. Forte correlação entre IMC, peso e altura (multicolinearidade)
+2. Histórico familiar é fator preditivo relevante
+3. Hábitos alimentares (FAVC, FCVC) têm impacto significativo
+4. Frequência de atividade física (FAF) inversamente proporcional à obesidade
+5. Modelo comportamental (sem dados antropométricos) atinge 85% de acurácia
+
+==============================================
+LIMITAÇÕES IDENTIFICADAS
+==============================================
+
+- Multicolinearidade entre Height/Weight/BMI (VIF > 20)
+- Dataset sintético/acadêmico (generalização para dados reais)
+- Dependência de auto-relato de hábitos
+- Não considera variações temporais
+
+==============================================
+TRABALHOS FUTUROS
+==============================================
+
+- Validação com dados clínicos reais
+- Implementação de SHAP para explicabilidade
+- Deploy em cloud (AWS/GCP)
+- API REST para integração
+- Sistema de monitoramento de drift
+- Testes automatizados com CI/CD
+
+==============================================
+CONTATO
+==============================================
+
+Nome: Nykolas Vieira Albino dos Santos
+Turma: POSTECH Data Analytics
+Tech Challenge: Fase 4

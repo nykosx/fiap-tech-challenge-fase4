@@ -139,10 +139,9 @@ if metrics:
         st.metric("🎯 Modelo Utilizado", metrics['model_name'])
     with col2:
         accuracy = metrics['accuracy'] * 100
-        st.metric("📊 Acurácia", f"{accuracy:.2f}%", 
-                 delta=f"{accuracy-75:.2f}%" if accuracy >= 75 else None)
+        st.metric("📊 Acurácia", f"{accuracy:.2f}%")
     with col3:
-        status = "✅ Meta Atingida" if metrics['accuracy'] >= 0.75 else "⚠️ Abaixo da Meta"
+        status = "✅ Atinge Meta (>75%)" if metrics['accuracy'] >= 0.75 else "⚠️ Abaixo da Meta"
         st.metric("🏆 Status", status)
     
     # Tabela de comparação de modelos
@@ -212,23 +211,29 @@ with tab1:
             x='Age',
             nbins=30,
             title='Distribuição por Idade',
-            color_discrete_sequence=['coral']
+            color_discrete_sequence=['coral'],
+            labels={'Age': 'Idade', 'count': 'Frequência'}
         )
-        fig3.update_layout(height=400)
+        fig3.update_layout(height=400, xaxis_title='Idade', yaxis_title='Frequência')
         st.plotly_chart(fig3, use_container_width=True)
     
     with col2:
-        # Boxplot de peso por obesidade
+        # Boxplot de peso por obesidade (ordenado)
+        df_ordered = df_filtered.copy()
+        df_ordered['Obesidade_PT'] = df_ordered['Obesity'].apply(get_obesity_label)
+        df_ordered['Obesity_Order'] = df_ordered['Obesity'].apply(lambda x: OBESITY_ORDER.index(x) if x in OBESITY_ORDER else 999)
+        df_ordered = df_ordered.sort_values('Obesity_Order')
+        
         fig4 = px.box(
-            df_filtered,
-            x='Obesity',
+            df_ordered,
+            x='Obesidade_PT',
             y='Weight',
             title='Distribuição de Peso por Nível de Obesidade',
-            color='Obesity',
+            color='Obesidade_PT',
             color_discrete_sequence=px.colors.qualitative.Set3
         )
-        fig4.update_layout(showlegend=False, height=400)
-        fig4.update_xaxis(tickangle=45)
+        fig4.update_layout(showlegend=False, height=400, xaxis_title='Nível de Obesidade', yaxis_title='Peso (kg)')
+        fig4.update_xaxes(tickangle=45)
         st.plotly_chart(fig4, use_container_width=True)
 
 with tab2:
@@ -252,27 +257,35 @@ with tab2:
     col1, col2 = st.columns(2)
     
     with col1:
+        df_scatter = df_filtered.copy()
+        df_scatter['Obesidade'] = df_scatter['Obesity'].apply(get_obesity_label)
+        
         fig6 = px.scatter(
-            df_filtered,
+            df_scatter,
             x='Height',
             y='Weight',
-            color='Obesity',
+            color='Obesidade',
             title='Peso vs Altura por Nível de Obesidade',
             color_discrete_sequence=px.colors.qualitative.Set2,
-            hover_data=['Age', 'BMI']
+            hover_data=['Age', 'BMI'],
+            labels={'Height': 'Altura (m)', 'Weight': 'Peso (kg)', 'Age': 'Idade', 'BMI': 'IMC'}
         )
         fig6.update_layout(height=400)
         st.plotly_chart(fig6, use_container_width=True)
     
     with col2:
+        df_scatter2 = df_filtered.copy()
+        df_scatter2['Obesidade'] = df_scatter2['Obesity'].apply(get_obesity_label)
+        
         fig7 = px.scatter(
-            df_filtered,
+            df_scatter2,
             x='Age',
             y='BMI',
-            color='Obesity',
+            color='Obesidade',
             title='IMC vs Idade por Nível de Obesidade',
             color_discrete_sequence=px.colors.qualitative.Set2,
-            hover_data=['Weight', 'Height']
+            hover_data=['Weight', 'Height'],
+            labels={'Age': 'Idade', 'BMI': 'IMC', 'Weight': 'Peso (kg)', 'Height': 'Altura (m)'}
         )
         fig7.update_layout(height=400)
         st.plotly_chart(fig7, use_container_width=True)
@@ -284,7 +297,10 @@ with tab3:
     
     with col1:
         # Obesidade por gênero
-        gender_obesity = pd.crosstab(df_filtered['Gender'], df_filtered['Obesity'], normalize='index') * 100
+        df_gender = df_filtered.copy()
+        df_gender['Gênero'] = df_gender['Gender'].apply(translate_value)
+        df_gender['Obesidade'] = df_gender['Obesity'].apply(get_obesity_label)
+        gender_obesity = pd.crosstab(df_gender['Gênero'], df_gender['Obesidade'], normalize='index') * 100
         
         fig8 = go.Figure()
         for col in gender_obesity.columns:
@@ -307,7 +323,10 @@ with tab3:
     
     with col2:
         # Histórico familiar
-        family_obesity = pd.crosstab(df_filtered['family_history'], df_filtered['Obesity'], normalize='index') * 100
+        df_family = df_filtered.copy()
+        df_family['Histórico Familiar'] = df_family['family_history'].apply(translate_value)
+        df_family['Obesidade'] = df_family['Obesity'].apply(get_obesity_label)
+        family_obesity = pd.crosstab(df_family['Histórico Familiar'], df_family['Obesidade'], normalize='index') * 100
         
         fig9 = go.Figure()
         for col in family_obesity.columns:
@@ -366,8 +385,9 @@ with tab4:
             text='Frequência Média'
         )
         fig11.update_traces(texttemplate='%{text:.2f}', textposition='outside')
-        fig11.update_layout(showlegend=False, height=400)
-        fig11.update_xaxis(tickangle=45)
+        fig11.update_layout(showlegend=False, height=450, margin=dict(t=80, b=80))
+        fig11.update_xaxes(tickangle=45)
+        fig11.update_yaxes(range=[0, faf_obesity['Frequência Média'].max() * 1.15])
         st.plotly_chart(fig11, use_container_width=True)
     
     with col2:
@@ -385,15 +405,19 @@ with tab4:
             text='Consumo Médio'
         )
         fig12.update_traces(texttemplate='%{text:.2f}L', textposition='outside')
-        fig12.update_layout(showlegend=False, height=400)
-        fig12.update_xaxis(tickangle=45)
+        fig12.update_layout(showlegend=False, height=450, margin=dict(t=80, b=80))
+        fig12.update_xaxes(tickangle=45)
+        fig12.update_yaxes(range=[0, ch2o_obesity['Consumo Médio'].max() * 1.15])
         st.plotly_chart(fig12, use_container_width=True)
     
     col1, col2 = st.columns(2)
     
     with col1:
         # Alimentos calóricos
-        favc_obesity = pd.crosstab(df_filtered['FAVC'], df_filtered['Obesity'], normalize='index') * 100
+        df_favc = df_filtered.copy()
+        df_favc['Alimentos Calóricos'] = df_favc['FAVC'].apply(translate_value)
+        df_favc['Obesidade'] = df_favc['Obesity'].apply(get_obesity_label)
+        favc_obesity = pd.crosstab(df_favc['Alimentos Calóricos'], df_favc['Obesidade'], normalize='index') * 100
         
         fig13 = go.Figure()
         for col in favc_obesity.columns:
@@ -416,12 +440,15 @@ with tab4:
     
     with col2:
         # Meio de transporte
-        mtrans_counts = df_filtered.groupby(['MTRANS', 'Obesity']).size().reset_index(name='count')
+        df_mtrans = df_filtered.copy()
+        df_mtrans['Transporte'] = df_mtrans['MTRANS'].apply(translate_value)
+        df_mtrans['Obesidade'] = df_mtrans['Obesity'].apply(get_obesity_label)
+        mtrans_counts = df_mtrans.groupby(['Transporte', 'Obesidade']).size().reset_index(name='Quantidade')
         
         fig14 = px.sunburst(
             mtrans_counts,
-            path=['MTRANS', 'Obesity'],
-            values='count',
+            path=['Transporte', 'Obesidade'],
+            values='Quantidade',
             title='Meio de Transporte por Nível de Obesidade',
             color_discrete_sequence=px.colors.qualitative.Pastel
         )
@@ -441,7 +468,7 @@ with col1:
         f"• **Taxa de Obesidade:** {obesity_rate:.1f}% dos pacientes apresentam algum tipo de obesidade",
         f"• **IMC Médio:** {avg_bmi:.2f} - {'Normal' if 18.5 <= avg_bmi < 25 else 'Acima do normal' if avg_bmi >= 25 else 'Abaixo do normal'}",
         f"• **Idade Média:** {avg_age:.1f} anos",
-        f"• **Gênero Predominante:** {df_filtered['Gender'].mode()[0]}"
+        f"• **Gênero Predominante:** {translate_value(df_filtered['Gender'].mode()[0])}"
     ]
     
     for insight in insights:
@@ -484,6 +511,6 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #888;">
     <p>Tech Challenge Fase 4 - POSTECH Data Analytics</p>
-    <p>Dashboard Analítico de Obesidade | Desenvolvido com ❤️ usando Streamlit</p>
+    <p>Dashboard Analítico de Obesidade | Desenvolvido usando Streamlit</p>
 </div>
 """, unsafe_allow_html=True)

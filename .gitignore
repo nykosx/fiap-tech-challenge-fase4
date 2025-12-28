@@ -1,10 +1,23 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[codz]
+*.py[cod]
 *$py.class
 
 # C extensions
 *.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Streamlit cache
+.streamlit/
+
+# Artifacts and temporary files
+artifacts/
+*.tmp
+*.bak
+*~
 
 # Distribution / packaging
 .Python

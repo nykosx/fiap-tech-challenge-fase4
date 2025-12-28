@@ -15,7 +15,7 @@ sys.path.append('../src')
 
 # Importar traduções e cores padronizadas
 from translations import (
-    VARIABLE_NAMES, OBESITY_LABELS, VALUE_TRANSLATIONS,
+    VARIABLE_NAMES, OBESITY_LABELS, OBESITY_ORDER, VALUE_TRANSLATIONS,
     PRIMARY_COLOR, SECONDARY_COLOR, ACCENT_COLOR,
     translate_variable, translate_value, get_obesity_label, get_color_palette
 )
@@ -58,19 +58,6 @@ if model is None:
     st.error("❌ Modelo não encontrado! Por favor, execute o notebook de treinamento primeiro.")
     st.stop()
 
-# Exibir métricas do modelo
-if metrics:
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("🎯 Modelo", metrics['model_name'])
-    with col2:
-        st.metric("📊 Acurácia", f"{metrics['accuracy']*100:.2f}%")
-    with col3:
-        status = "✅ Meta Atingida" if metrics['accuracy'] >= 0.75 else "⚠️ Abaixo da Meta"
-        st.metric("🏆 Status", status)
-
-st.markdown("---")
-
 # Sidebar para entrada de dados
 st.sidebar.header("📝 Dados do Paciente")
 st.sidebar.markdown("Preencha as informações abaixo:")
@@ -91,22 +78,42 @@ with st.sidebar.form("patient_form"):
                                  format_func=lambda x: translate_value(x))
     favc = st.selectbox(translate_variable("FAVC"), ["yes", "no"],
                        format_func=lambda x: translate_value(x))
-    fcvc = st.slider(translate_variable("FCVC"), 0.0, 3.0, 2.0, 0.1)
-    ncp = st.slider(translate_variable("NCP"), 1.0, 4.0, 3.0, 0.1)
+    
+    # FCVC como seleção (raramente/às vezes/sempre)
+    fcvc_options = {'Raramente': 1.0, 'Às vezes': 2.0, 'Sempre': 3.0}
+    fcvc_label = st.selectbox(translate_variable("FCVC"), list(fcvc_options.keys()))
+    fcvc = fcvc_options[fcvc_label]
+    
+    # NCP como seleção
+    ncp_options = {'1 refeição': 1.0, '2 refeições': 2.0, '3 refeições': 3.0, '4+ refeições': 4.0}
+    ncp_label = st.selectbox(translate_variable("NCP"), list(ncp_options.keys()))
+    ncp = ncp_options[ncp_label]
     
     caec = st.selectbox(translate_variable("CAEC"), 
                        ["no", "Sometimes", "Frequently", "Always"],
                        format_func=lambda x: translate_value(x))
     smoke = st.selectbox(translate_variable("SMOKE"), ["yes", "no"],
                         format_func=lambda x: translate_value(x))
-    ch2o = st.slider(translate_variable("CH2O"), 0.0, 3.0, 2.0, 0.1)
+    
+    # CH2O como seleção
+    ch2o_options = {'< 1 litro': 1.0, '1-2 litros': 2.0, '> 2 litros': 3.0}
+    ch2o_label = st.selectbox(translate_variable("CH2O"), list(ch2o_options.keys()))
+    ch2o = ch2o_options[ch2o_label]
+    
     scc = st.selectbox(translate_variable("SCC"), ["yes", "no"],
                       format_func=lambda x: translate_value(x))
     
     st.subheader("Atividade Física")
     
-    faf = st.slider(translate_variable("FAF"), 0.0, 3.0, 1.0, 0.1)
-    tue = st.slider(translate_variable("TUE"), 0.0, 2.0, 1.0, 0.1)
+    # FAF como seleção
+    faf_options = {'Nunca': 0.0, 'Raro': 1.0, 'Às vezes': 2.0, 'Frequente': 3.0}
+    faf_label = st.selectbox(translate_variable("FAF"), list(faf_options.keys()))
+    faf = faf_options[faf_label]
+    
+    # TUE como seleção
+    tue_options = {'0-1 hora': 0.0, '1-2 horas': 1.0, '2+ horas': 2.0}
+    tue_label = st.selectbox(translate_variable("TUE"), list(tue_options.keys()))
+    tue = tue_options[tue_label]
     
     st.subheader("Outros")
     
@@ -114,12 +121,41 @@ with st.sidebar.form("patient_form"):
                        ["no", "Sometimes", "Frequently", "Always"],
                        format_func=lambda x: translate_value(x))
     mtrans = st.selectbox(translate_variable("MTRANS"), 
-                         ["Automobile", "Bike", "Motorbike", "Public_Transportation", "Walking"])
+                         ["Automobile", "Bike", "Motorbike", "Public_Transportation", "Walking"],
+                         format_func=lambda x: translate_value(x))
     
     submit_button = st.form_submit_button("🔍 Fazer Predição")
 
 # Processar predição quando o botão for clicado
 if submit_button:
+    # Validações de entrada
+    validation_errors = []
+    
+    # Validar altura
+    if height < 1.2 or height > 2.3:
+        validation_errors.append("⚠️ Altura deve estar entre 1.20m e 2.30m")
+    
+    # Validar peso
+    if weight < 30 or weight > 300:
+        validation_errors.append("⚠️ Peso deve estar entre 30kg e 300kg")
+    
+    # Validar idade
+    if age < 10 or age > 120:
+        validation_errors.append("⚠️ Idade deve estar entre 10 e 120 anos")
+    
+    # Validar IMC extremo
+    bmi = weight / (height ** 2)
+    if bmi < 10 or bmi > 80:
+        validation_errors.append(f"⚠️ IMC calculado ({bmi:.1f}) está fora do intervalo esperado (10-80)")
+    
+    # Se houver erros, exibir e parar
+    if validation_errors:
+        st.error("❌ **Erros de Validação:**")
+        for error in validation_errors:
+            st.warning(error)
+        st.info("💡 Por favor, verifique os valores inseridos e tente novamente.")
+        st.stop()
+    
     try:
         # Calcular BMI
         bmi = weight / (height ** 2)
@@ -146,21 +182,26 @@ if submit_button:
         })
         
         # Codificar variáveis categóricas
-        categorical_cols = input_data.select_dtypes(include=['object']).columns
-        for col in categorical_cols:
-            if col in label_encoders:
-                input_data[col] = label_encoders[col].transform(input_data[col])
+        input_encoded = input_data.copy()
+        categorical_cols = ['Gender', 'family_history', 'FAVC', 'CAEC', 'SMOKE', 'SCC', 'CALC', 'MTRANS']
         
-        # Normalizar features numéricas
-        numerical_cols = input_data.select_dtypes(include=[np.number]).columns
-        input_data[numerical_cols] = scaler.transform(input_data[numerical_cols])
+        for col in categorical_cols:
+            if col in label_encoders and col in input_encoded.columns:
+                input_encoded[col] = label_encoders[col].transform(input_encoded[col])
+        
+        # Identificar colunas numéricas (incluindo as categóricas agora codificadas)
+        numerical_cols = ['Age', 'Height', 'Weight', 'FCVC', 'NCP', 'CH2O', 'FAF', 'TUE', 'BMI']
+        
+        # Normalizar APENAS as colunas numéricas (como no treinamento)
+        input_scaled = input_encoded.copy()
+        input_scaled[numerical_cols] = scaler.transform(input_encoded[numerical_cols])
         
         # Reordenar colunas para corresponder ao treinamento
-        input_data = input_data[feature_names]
+        input_scaled = input_scaled[feature_names]
         
         # Fazer predição
-        prediction = model.predict(input_data)[0]
-        prediction_proba = model.predict_proba(input_data)[0]
+        prediction = model.predict(input_scaled)[0]
+        prediction_proba = model.predict_proba(input_scaled)[0]
         
         # Decodificar predição
         predicted_class = target_encoder.inverse_transform([prediction])[0]
@@ -208,8 +249,15 @@ if submit_button:
             classes_pt = [get_obesity_label(cls) for cls in classes]
             proba_df = pd.DataFrame({
                 'Classe': classes_pt,
+                'Classe_Original': classes,
                 'Probabilidade': prediction_proba * 100
-            }).sort_values('Probabilidade', ascending=True)
+            })
+            
+            # Ordenar por ordem natural de obesidade (Peso Insuficiente -> Obesidade III)
+            proba_df['Ordem'] = proba_df['Classe_Original'].apply(
+                lambda x: OBESITY_ORDER.index(x) if x in OBESITY_ORDER else 999
+            )
+            proba_df = proba_df.sort_values('Ordem').drop('Ordem', axis=1)
             
             # Gráfico de barras horizontais com cores padronizadas
             colors_gradient = get_color_palette(len(proba_df), reverse=True)
@@ -290,6 +338,17 @@ if submit_button:
         
         # Informações adicionais
         st.markdown("---")
+        
+        # Informações do modelo (expandível)
+        with st.expander("ℹ️ Sobre o Modelo"):
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                st.metric("🎯 Algoritmo", metrics['model_name'] if metrics else "Random Forest")
+            with col2:
+                st.metric("📊 Acurácia", f"{metrics['accuracy']*100:.2f}%" if metrics else "99.05%")
+            with col3:
+                st.metric("🏆 Validação", "5-Fold CV")
+        
         st.info("ℹ️ **Nota:** Este sistema é uma ferramenta de apoio à decisão. Sempre consulte profissionais de saúde qualificados para diagnóstico e tratamento adequados.")
         
     except Exception as e:

@@ -9,9 +9,9 @@ Baseado no dicionário de dados oficial (dicionario_obesity_fiap.pdf)
 # CORES PADRÃO DO PROJETO
 # ============================================================================
 
-PRIMARY_COLOR = '#2c3e50'      # Azul escuro principal
-SECONDARY_COLOR = '#3498db'    # Azul médio
-ACCENT_COLOR = '#e74c3c'       # Vermelho para destaques (média, outliers)
+PRIMARY_COLOR = '#1a252f'      # Azul muito escuro (quase navy)
+SECONDARY_COLOR = '#2c5f7c'    # Azul médio escurecido
+ACCENT_COLOR = '#8b3a3a'       # Vermelho escuro/bordô
 
 # ============================================================================
 # TRADUÇÃO DE VARIÁVEIS
@@ -32,18 +32,18 @@ VARIABLE_NAMES = {
     
     # Hábitos alimentares
     'FAVC': 'Consumo de Alimentos Calóricos',
-    'FCVC': 'Consumo de Vegetais (freq.)',
+    'FCVC': 'Frequência de Consumo de Vegetais',
     'NCP': 'Nº de Refeições Principais',
     'CAEC': 'Consumo Entre Refeições',
     
     # Hábitos de saúde
     'SMOKE': 'Fumante',
-    'CH2O': 'Consumo de Água Diário (L)',
+    'CH2O': 'Consumo de Água Diário (Litros)',
     'SCC': 'Monitora Calorias',
     
     # Atividade física
-    'FAF': 'Frequência de Atividade Física (sem.)',
-    'TUE': 'Tempo em Dispositivos Eletrônicos (h)',
+    'FAF': 'Frequência de Atividade Física (semanal)',
+    'TUE': 'Tempo Diário em Dispositivos Eletrônicos (h)',
     
     # Outros hábitos
     'CALC': 'Consumo de Álcool',
@@ -62,7 +62,7 @@ VARIABLE_DESCRIPTIONS = {
     'BMI': 'Índice de Massa Corporal (kg/m²)',
     'family_history': 'Histórico familiar de excesso de peso',
     'FAVC': 'Consumo frequente de alimentos muito calóricos',
-    'FCVC': 'Frequência de consumo de vegetais nas refeições',
+    'FCVC': 'Frequência de consumo de vegetais nas refeições (escala 1-3: raramente/às vezes/sempre)',
     'NCP': 'Número de refeições principais por dia',
     'CAEC': 'Consumo de lanches/comidas entre as refeições',
     'SMOKE': 'Hábito de fumar',
@@ -145,9 +145,9 @@ VALUE_TRANSLATIONS = {
 # Escalas das variáveis ordinais
 VARIABLE_SCALES = {
     'FCVC': {
-        1: 'Raramente',
-        2: 'Às vezes',
-        3: 'Sempre'
+        1: 'Raramente (1)',
+        2: 'Às vezes (2)',
+        3: 'Sempre (3)'
     },
     'NCP': {
         1: '1 refeição',

@@ -51,9 +51,18 @@ Desenvolver uma solução completa de Machine Learning para **classificação mu
   - F1-Score
   - Cross-Validation (5-fold)
 - Comparação visual de modelos
-- Otimização do melhor modelo (GridSearchCV)
+- **Análise de Feature Importance (Modelo Base)**: Identifica top 15 variáveis mais importantes
+- Otimização do melhor modelo (GridSearchCV com n_jobs=1 para estabilidade)
+- **Análise de Feature Importance (Modelo Otimizado)**: 
+  - Ranking completo de importância das features
+  - Análise crítica sobre redundância antropométrica
+  - Identifica se modelo está "calculando" BMI vs aprendendo padrões
 - Matriz de confusão detalhada
-- Análise de feature importance
+- **Teste Experimental: Modelo Comportamental**:
+  - Remove Height, Weight e BMI do dataset
+  - Treina modelos usando APENAS fatores comportamentais, genéticos e demográficos
+  - Compara performance: Modelo Completo vs Comportamental
+  - Avalia utilidade clínica vs performance técnica
 - Salvamento de todos os artefatos
 
 **Outputs:** 
@@ -62,6 +71,12 @@ Desenvolver uma solução completa de Machine Learning para **classificação mu
 - Scaler (scaler.pkl)
 - Feature names (feature_names.pkl)
 - Métricas (model_metrics.pkl)
+
+**Insights Importantes:**
+- 🔬 Feature Importance revela quais variáveis dominam a predição
+- 📊 Análise crítica sobre circularidade matemática (BMI = Weight/Height²)
+- 💡 Modelo comportamental demonstra valor para screening remoto
+- ⚕️ Distinção entre modelo para challenge (>75% acurácia) e modelo para uso clínico real
 
 ---
 
