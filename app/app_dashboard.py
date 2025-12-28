@@ -12,10 +12,14 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import joblib
 import sys
-sys.path.append('../src')
+import os
+
+# Adicionar o diretório raiz ao path para imports
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT_DIR)
 
 # Importar traduções e cores padronizadas
-from translations import (
+from src.translations import (
     VARIABLE_NAMES, OBESITY_LABELS, OBESITY_ORDER, VALUE_TRANSLATIONS,
     PRIMARY_COLOR, SECONDARY_COLOR, ACCENT_COLOR,
     translate_variable, translate_value, get_obesity_label, get_color_palette
@@ -34,7 +38,8 @@ st.set_page_config(
 def load_data():
     """Carregar dataset"""
     try:
-        df = pd.read_csv('../data/Obesity.csv')
+        data_path = os.path.join(ROOT_DIR, 'data', 'Obesity.csv')
+        df = pd.read_csv(data_path)
         df['BMI'] = df['Weight'] / (df['Height'] ** 2)
         return df
     except Exception as e:
@@ -46,7 +51,8 @@ def load_data():
 def load_metrics():
     """Carregar métricas do modelo"""
     try:
-        metrics = joblib.load('../models/model_metrics.pkl')
+        metrics_path = os.path.join(ROOT_DIR, 'models', 'model_metrics.pkl')
+        metrics = joblib.load(metrics_path)
         return metrics
     except:
         return None

@@ -11,10 +11,14 @@ import plotly.graph_objects as go
 import plotly.express as px
 from pathlib import Path
 import sys
-sys.path.append('../src')
+import os
+
+# Adicionar o diretório raiz ao path para imports
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT_DIR)
 
 # Importar traduções e cores padronizadas
-from translations import (
+from src.translations import (
     VARIABLE_NAMES, OBESITY_LABELS, OBESITY_ORDER, VALUE_TRANSLATIONS,
     PRIMARY_COLOR, SECONDARY_COLOR, ACCENT_COLOR,
     translate_variable, translate_value, get_obesity_label, get_color_palette
@@ -33,12 +37,13 @@ st.set_page_config(
 def load_model_artifacts():
     """Carregar modelo e artefatos necessários"""
     try:
-        model = joblib.load('../models/best_model.pkl')
-        label_encoders = joblib.load('../models/label_encoders.pkl')
-        target_encoder = joblib.load('../models/target_encoder.pkl')
-        scaler = joblib.load('../models/scaler.pkl')
-        feature_names = joblib.load('../models/feature_names.pkl')
-        metrics = joblib.load('../models/model_metrics.pkl')
+        models_dir = os.path.join(ROOT_DIR, 'models')
+        model = joblib.load(os.path.join(models_dir, 'best_model.pkl'))
+        label_encoders = joblib.load(os.path.join(models_dir, 'label_encoders.pkl'))
+        target_encoder = joblib.load(os.path.join(models_dir, 'target_encoder.pkl'))
+        scaler = joblib.load(os.path.join(models_dir, 'scaler.pkl'))
+        feature_names = joblib.load(os.path.join(models_dir, 'feature_names.pkl'))
+        metrics = joblib.load(os.path.join(models_dir, 'model_metrics.pkl'))
         
         return model, label_encoders, target_encoder, scaler, feature_names, metrics
     except Exception as e:
