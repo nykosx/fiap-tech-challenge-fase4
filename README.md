@@ -3,8 +3,6 @@
 ## 🛠️ STATUS DO PROJETO
 **✅ PROJETO COMPLETO - Pronto para uso e avaliação**
 
-> 📖 **Para continuar em nova sessão**: Leia [CONTEXTO_PROJETO.md](CONTEXTO_PROJETO.md) - contém o estado completo do projeto e prompt para nova sessão do Copilot.
-
 ## 🎯 Objetivo Principal
 Desenvolver um modelo de Machine Learning (Classificação Multiclasse) para prever os níveis de obesidade de pacientes. A solução deve atingir mais de **75% de acurácia** e ser entregue com uma aplicação preditiva em **Streamlit** e um **Dashboard Analítico** para a equipe médica.
 
@@ -40,8 +38,7 @@ fiap-tech-challenge-fase4/
 │   └── 02_model_training.ipynb              # Treinamento e avaliação de modelos
 │
 ├── src/                          # Código fonte reutilizável
-│   ├── preprocessing.py          # Funções de preprocessamento
-│   └── model_utils.py           # Funções de avaliação de modelos
+│   └── translations.py          # Traduções e padronizações PT-BR
 │
 ├── models/                       # Modelos treinados e artefatos
 │   ├── best_model.pkl           # Melhor modelo treinado
@@ -55,6 +52,13 @@ fiap-tech-challenge-fase4/
 │   ├── app_prediction.py       # App de predição individual
 │   └── app_dashboard.py        # Dashboard analítico
 │
+├── tests/                       # Testes automatizados
+│   └── test_model.py           # Testes do pipeline ML
+│
+├── docs/                        # Documentação técnica
+│   └── DOCUMENTACAO_TECNICA.md # Detalhes de implementação
+│
+├── links_entrega.txt           # Links de entrega do projeto
 ├── requirements.txt             # Dependências do projeto
 ├── .gitignore                  # Arquivos ignorados pelo Git
 └── README.md                   # Este arquivo
