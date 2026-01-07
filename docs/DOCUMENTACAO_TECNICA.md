@@ -1,268 +1,50 @@
-# Padronização de Visualizações e Traduções
-
-## 📋 Resumo das Melhorias Implementadas
-
-### 1. **Módulo Centralizado de Traduções** (`src/translations.py`)
-
-Criado arquivo Python com:
-- ✅ Dicionário completo de variáveis (baseado no dicionário oficial)
-- ✅ Tradução de níveis de obesidade
-- ✅ Tradução de valores categóricos
-- ✅ Cores padronizadas do projeto
-- ✅ Funções auxiliares para tradução automática
-- ✅ Insights acadêmicos documentados
-
-**Cores Padrão do Projeto:**
-```python
-PRIMARY_COLOR = '#2c3e50'      # Azul escuro principal
-SECONDARY_COLOR = '#3498db'    # Azul médio
-ACCENT_COLOR = '#e74c3c'       # Vermelho para destaques
-```
-
----
-
-### 2. **Notebook de EDA Atualizado** (`notebooks/01_exploratory_data_analysis.ipynb`)
-
-#### ✅ Melhorias Implementadas:
-
-**2.1. Primeira Célula:**
-- Dicionários de tradução integrados
-- Cores padronizadas definidas
-- Mapeamento completo de variáveis e valores
-
-**2.2. Visualizações Atualizadas:**
-
-| Célula | Melhorias |
-|--------|-----------|
-| **Boxplots de Outliers** | • Cores padronizadas (SECONDARY_COLOR, PRIMARY_COLOR, ACCENT_COLOR)<br>• Nomes traduzidos para português<br>• Contagem de outliers adicionada<br>• Análise IQR detalhada |
-| **Distribuições Numéricas** | • Histogramas com cores padronizadas<br>• Títulos e rótulos em português<br>• Média destacada em vermelho |
-| **Variáveis Categóricas** | • Barras com PRIMARY_COLOR<br>• Valores traduzidos (Sim/Não, Masculino/Feminino)<br>• Percentuais adicionados |
-| **Boxplots vs Obesidade** | • Cores padronizadas em todos os gráficos<br>• Labels traduzidos<br>• **NOVA: Teste ANOVA** com interpretação estatística |
-| **Gênero × Obesidade** | • Gradiente azul profissional<br>• **NOVA: Teste Chi-quadrado**<br>• **NOVO: Insight acadêmico** sobre diferenças metabólicas |
-| **Histórico Familiar** | • Gradiente azul padronizado<br>• **NOVA: Análise estatística**<br>• **NOVO: Insight sobre hereditariedade** (40-70% do IMC) |
-| **Matriz de Correlação** | • Nomes traduzidos em eixos<br>• Correlações fortes E moderadas identificadas |
-
-**2.3. Novas Análises Adicionadas:**
-
-✨ **Seção 7.1: Análise de Fatores Comportamentais**
-
-**a) Atividade Física vs Obesidade:**
-- Boxplots comparando FAF entre níveis de obesidade
-- Gráfico de barras com médias
-- Teste ANOVA (p-valor)
-- **Insight Acadêmico:** Redução de 20-30% do risco (OMS, 2020)
-- Recomendações da OMS (≥150 min/semana)
-
-**b) Hábitos Alimentares vs Obesidade:**
-- Consumo de alimentos calóricos (FAVC) × Obesidade
-- Consumo de vegetais (FCVC) × Obesidade
-- Testes estatísticos (Chi-quadrado + ANOVA)
-- **Insights Acadêmicos:** Efeito de ultraprocessados (+500 kcal/dia)
-
-**2.4. Conclusões Enriquecidas:**
-
-Nova seção 9 com:
-- ✅ Hierarquia de variáveis importantes
-- ✅ Testes estatísticos resumidos
-- ✅ Insights acadêmicos por categoria
-- ✅ Implicações para modelagem
-- ✅ Referências bibliográficas
-
----
-
-### 3. **Traduções Completas Aplicadas**
-
-#### Variáveis Traduzidas:
-
-| Código Original | Tradução em Português |
-|-----------------|----------------------|
-| `Gender` | Gênero |
-| `Age` | Idade (anos) |
-| `Height` | Altura (m) |
-| `Weight` | Peso (kg) |
-| `BMI` | IMC (kg/m²) |
-| `family_history` | Histórico Familiar de Obesidade |
-| `FAVC` | Consumo de Alimentos Calóricos |
-| `FCVC` | Consumo de Vegetais (freq.) |
-| `NCP` | Nº de Refeições Principais |
-| `CAEC` | Consumo Entre Refeições |
-| `SMOKE` | Fumante |
-| `CH2O` | Consumo de Água Diário (L) |
-| `SCC` | Monitora Calorias |
-| `FAF` | Frequência de Atividade Física (sem.) |
-| `TUE` | Tempo em Dispositivos Eletrônicos (h) |
-| `CALC` | Consumo de Álcool |
-| `MTRANS` | Meio de Transporte |
-
-#### Níveis de Obesidade:
-
-| Código Original | Tradução |
-|-----------------|----------|
-| `Insufficient_Weight` | Peso Insuficiente |
-| `Normal_Weight` | Peso Normal |
-| `Overweight_Level_I` | Sobrepeso I |
-| `Overweight_Level_II` | Sobrepeso II |
-| `Obesity_Type_I` | Obesidade I |
-| `Obesity_Type_II` | Obesidade II |
-| `Obesity_Type_III` | Obesidade III |
-
-#### Valores Categóricos:
-
-| Original | Tradução |
-|----------|----------|
-| `Female` | Feminino |
-| `Male` | Masculino |
-| `yes` | Sim |
-| `no` | Não |
-| `Sometimes` | Às vezes |
-| `Frequently` | Frequentemente |
-| `Always` | Sempre |
-| `Public_Transportation` | Transporte Público |
-| `Automobile` | Automóvel |
-| `Bike` | Bicicleta |
-| `Walking` | Caminhando |
+﻿# Documentação técnica
 
----
+Este documento resume as principais decisões técnicas de padronização e organização do projeto.
 
-### 4. **Insights Acadêmicos Integrados**
+## Módulo de traduções e cores
 
-#### 🎓 Evidências Científicas Adicionadas:
+O arquivo [src/translations.py](../src/translations.py) centraliza:
 
-**Genética e Hereditariedade:**
-- 40-70% da variação do IMC é genética (Locke et al., Nature 2015)
-- Genes: FTO, MC4R, POMC
-- Ambiente familiar compartilhado
+- nomes das variáveis em português (curtos e descritivos);
+- descrições mais completas para uso em textos e tooltips;
+- rótulos dos níveis de obesidade (em português) e sua ordem lógica;
+- traduções de valores categóricos (por exemplo, `yes`/`no`, meios de transporte);
+- escalas legíveis para variáveis ordinais (FAF, TUE, CH2O etc.);
+- cores padrão do projeto e uma função utilitária `get_color_palette` para gerar paletas coerentes.
 
-**Atividade Física:**
-- Reduz risco em 20-30% (OMS, 2020)
-- ≥150 min/semana: recomendação mínima
-- HIIT eficaz para perda de gordura
+As cores base utilizadas nas aplicações são importadas desse módulo (PRIMARY_COLOR, SECONDARY_COLOR, ACCENT_COLOR), garantindo consistência visual entre notebooks e apps.
 
-**Hábitos Alimentares:**
-- Ultraprocessados: +500 kcal/dia (Harvard, 2023)
-- Vegetais e fibras: efeito protetor
-- Padrão alimentar > nutrientes isolados
+## Padrão visual
 
-**Diferenças de Gênero:**
-- Metabolismo e hormônios diferentes
-- Distribuição de gordura corporal (Kanter & Caballero, 2012)
+Nos notebooks e no dashboard foram adotados alguns princípios simples de visualização:
 
----
+- uso de uma paleta de azuis para a maior parte dos gráficos, evitando “rainbow” e combinações muito chamativas;
+- títulos e eixos em português, com fonte legível e tamanhos consistentes;
+- grades discretas, destaque para médias/limiares quando relevante e rótulos de eixos claros;
+- organização dos gráficos por tema (distribuições, correlações, demografia, hábitos de vida) para facilitar leitura.
 
-### 5. **Testes Estatísticos Adicionados**
+O objetivo foi manter as visualizações informativas e agradáveis sem exagero de efeitos visuais.
 
-#### ✅ Implementados:
+## Integração com notebooks e apps
 
-1. **ANOVA (variáveis numéricas vs obesidade):**
-   - Identifica diferenças significativas entre grupos
-   - Valores p interpretados (*** p<0.001, ** p<0.01, * p<0.05)
+- O notebook de EDA ([01_exploratory_data_analysis.ipynb](../notebooks/01_exploratory_data_analysis.ipynb)) utiliza as traduções e cores padronizadas para exibir gráficos com rótulos em português e paleta consistente.
+- O notebook de modelagem ([02_model_training.ipynb](../notebooks/02_model_training.ipynb)) se beneficia das mesmas convenções quando apresenta gráficos de importância de variáveis e demais visualizações.
+- As aplicações Streamlit ([app/app_prediction.py](../app/app_prediction.py) e [app/app_dashboard.py](../app/app_dashboard.py)) importam `translate_variable`, `translate_value`, `get_obesity_label` e `get_color_palette` para:
+  - traduzir variáveis e valores diretamente na interface;
+  - padronizar as cores dos gráficos interativos;
+  - garantir que os nomes e rótulos exibidos ao usuário final sejam os mesmos usados na análise.
 
-2. **Chi-Quadrado (variáveis categóricas vs obesidade):**
-   - Testa associação entre variáveis
-   - Aplicado a: Gênero, Histórico Familiar, FAVC
+## Evolução do dashboard
 
-3. **Interpretações:**
-   - Conclusões em português
-   - Contexto acadêmico
-   - Implicações práticas
+Durante o desenvolvimento foram levantadas ideias adicionais para o dashboard (como destacar mais os fatores modificáveis, simular intervenções e separar melhor grupos de risco). Diante dos prazos e do escopo do desafio, optou‑se por implementar uma versão mais enxuta, focada em:
 
----
+- indicadores principais do dataset (total de registros, IMC médio, taxas por classe);
+- visualizações de distribuições, correlações, demografia e hábitos;
+- exibição resumida das métricas do modelo treinado.
 
-## 📊 Padrão Visual do Projeto
+As ideias de evolução futura do dashboard ficaram documentadas apenas em alto nível (por exemplo, criar abas dedicadas a fatores modificáveis ou a perfis de risco) e podem ser retomadas em trabalhos posteriores, caso o projeto avance além do contexto do Tech Challenge.
 
-### Gradiente de Azul Profissional:
-- **Range:** 0.35 a 0.95 (densidade adequada)
-- **Alpha:** 0.85 para barras, 1.0 para heatmaps
-- **Bordas:** Preto com linewidth=1.2
-- **Mediana/Média:** Vermelho (ACCENT_COLOR)
+## Referências
 
-### Estilo de Gráficos:
-- ✅ Fundo branco com grid discreto (alpha=0.3)
-- ✅ Fontes: Títulos bold (12-14pt), labels (10-11pt)
-- ✅ Rotação de labels quando necessário (45°, ha='right')
-- ✅ Valores exibidos nas barras (contagem + percentual)
-- ✅ Legendas posicionadas fora da área de plotagem
-
----
-
-## 🚀 Próximos Passos Sugeridos
-
-### Para Aplicar em Todo o Projeto:
-
-1. **Atualizar `app_dashboard.py`:**
-   ```python
-   from src.translations import (
-       VARIABLE_NAMES, OBESITY_LABELS, VALUE_TRANSLATIONS,
-       PRIMARY_COLOR, SECONDARY_COLOR, ACCENT_COLOR,
-       translate_variable, get_color_palette
-   )
-   ```
-
-2. **Atualizar `app_prediction.py`:**
-   - Usar traduções em todos os inputs
-   - Aplicar cores padronizadas
-   - Adicionar insights acadêmicos nas recomendações
-
-3. **Atualizar `02_model_training.ipynb`:**
-   - Traduzir feature importance plots
-   - Padronizar cores da matriz de confusão
-   - Usar labels em português
-
-4. **Documentação:**
-   - Adicionar seção sobre traduções no README
-   - Documentar uso do módulo `translations.py`
-
----
-
-## 📚 Referências Bibliográficas
-
-As seguintes referências foram integradas nas análises:
-
-1. **Locke, A. E. et al. (2015).** Genetic studies of body mass index. *Nature*, 518(7538), 197-206.
-
-2. **Claussnitzer, M. et al. (2015).** FTO Obesity Variant Circuitry. *New England Journal of Medicine*.
-
-3. **Donnelly, J. E. et al. (2009).** Appropriate Physical Activity Intervention Strategies. *Medicine & Science in Sports & Exercise*.
-
-4. **WHO (2020).** *Physical Activity and Obesity Prevention Guidelines*.
-
-5. **Harvard T.H. Chan School of Public Health (2023).** *The Nutrition Source: Obesity Prevention*.
-
-6. **Kanter, R. & Caballero, B. (2012).** Global Gender Disparities in Obesity. *Nutrition Reviews*.
-
----
-
-## ✅ Checklist de Qualidade
-
-- [x] Todas as variáveis traduzidas para português
-- [x] Cores padronizadas em todos os gráficos
-- [x] Dicionário de dados oficial implementado
-- [x] Insights acadêmicos documentados
-- [x] Testes estatísticos com interpretações
-- [x] Módulo reutilizável criado (`translations.py`)
-- [x] Visualizações profissionais (sem rainbow colors)
-- [x] Nomes legíveis em todos os eixos
-- [ ] Aplicar em apps Streamlit (próximo passo)
-- [ ] Aplicar em notebook de modelagem (próximo passo)
-- [ ] Atualizar documentação principal (próximo passo)
-
----
-
-## 💡 Melhorias Profissionais Alcançadas
-
-### Antes vs Depois:
-
-| Aspecto | Antes ❌ | Depois ✅ |
-|---------|---------|----------|
-| **Variáveis** | Abreviações (FAVC, FAF) | Nomes completos em PT |
-| **Cores** | Inconsistentes (rainbow, lightblue) | Gradiente azul profissional |
-| **Gráficos** | Boxplots genéricos | Cores padronizadas + outliers |
-| **Análises** | Descritivas apenas | + Testes estatísticos |
-| **Insights** | Básicos | + Evidências acadêmicas |
-| **Reusabilidade** | Código repetido | Módulo centralizado |
-| **Documentação** | Mínima | Referências + interpretações |
-
----
-
-**Data de Atualização:** 17/12/2025  
-**Versão:** 2.0 - Padronização Completa
+As mesmas referências listadas em METODOLOGIA_E_INSIGHTS.md servem como base para as escolhas de visualização e comunicação dos resultados (organização Mundial da Saúde, literatura sobre obesidade e atividade física, documentação das bibliotecas utilizadas).

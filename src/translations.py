@@ -128,7 +128,6 @@ VALUE_TRANSLATIONS = {
     'Sometimes': 'Às vezes',
     'Frequently': 'Frequentemente',
     'Always': 'Sempre',
-    'no': 'Nunca',
     
     # Meios de transporte
     'Public_Transportation': 'Transporte Público',

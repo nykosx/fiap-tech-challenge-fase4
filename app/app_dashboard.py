@@ -58,8 +58,8 @@ def load_metrics():
         return None
 
 # Título
-st.title("📊 Dashboard Analítico de Obesidade")
-st.markdown("### Análises e Insights para Equipe Médica")
+st.title("Dashboard Analítico de Obesidade")
+st.markdown("### Análises e insights para equipe médica")
 st.markdown("---")
 
 # Carregar dados
@@ -71,7 +71,7 @@ if df is None:
     st.stop()
 
 # Sidebar - Filtros
-st.sidebar.header("🔍 Filtros")
+st.sidebar.header("Filtros")
 
 # Filtro de gênero (com tradução)
 gender_options = df['Gender'].unique()
@@ -111,57 +111,42 @@ st.sidebar.markdown("---")
 st.sidebar.markdown(f"**Total de Registros:** {len(df_filtered)}")
 
 # KPIs principais
-st.header("📈 Indicadores Principais")
+st.header("Indicadores principais")
 col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
-    st.metric("👥 Total de Pacientes", f"{len(df_filtered):,}")
+    st.metric("Total de pacientes", f"{len(df_filtered):,}")
 
 with col2:
     avg_age = df_filtered['Age'].mean()
-    st.metric("🎂 Idade Média", f"{avg_age:.1f} anos")
+    st.metric("Idade média", f"{avg_age:.1f} anos")
 
 with col3:
     avg_bmi = df_filtered['BMI'].mean()
-    st.metric("📊 IMC Médio", f"{avg_bmi:.2f}")
+    st.metric("IMC médio", f"{avg_bmi:.2f}")
 
 with col4:
     obesity_rate = (df_filtered['Obesity'].str.contains('Obesity').sum() / len(df_filtered)) * 100
-    st.metric("⚠️ Taxa de Obesidade", f"{obesity_rate:.1f}%")
+    st.metric("Taxa de obesidade", f"{obesity_rate:.1f}%")
 
 with col5:
     normal_weight = (df_filtered['Obesity'] == 'Normal_Weight').sum()
     normal_pct = (normal_weight / len(df_filtered)) * 100
-    st.metric("✅ Peso Normal", f"{normal_pct:.1f}%")
+    st.metric("Peso normal", f"{normal_pct:.1f}%")
 
 st.markdown("---")
 
-# Performance do Modelo
-if metrics:
-    st.header("🤖 Performance do Modelo de ML")
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.metric("🎯 Modelo Utilizado", metrics['model_name'])
-    with col2:
-        accuracy = metrics['accuracy'] * 100
-        st.metric("📊 Acurácia", f"{accuracy:.2f}%")
-    with col3:
-        status = "✅ Atinge Meta (>75%)" if metrics['accuracy'] >= 0.75 else "⚠️ Abaixo da Meta"
-        st.metric("🏆 Status", status)
-    
-    # Tabela de comparação de modelos
-    if 'results_df' in metrics:
-        with st.expander("📋 Ver Comparação Detalhada de Modelos"):
-            st.dataframe(metrics['results_df'], use_container_width=True)
-    
-    st.markdown("---")
-
 # Visualizações
-tab1, tab2, tab3, tab4 = st.tabs(["📊 Distribuições", "🔗 Correlações", "👥 Demografia", "🏃 Hábitos de Vida"])
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "Distribuições",
+    "Correlações",
+    "Demografia",
+    "Hábitos de vida",
+    "Modelo de ML"
+])
 
 with tab1:
-    st.header("Distribuições de Variáveis")
+    st.header("Distribuições de variáveis")
     
     col1, col2 = st.columns(2)
     
@@ -216,8 +201,8 @@ with tab1:
             df_filtered,
             x='Age',
             nbins=30,
-            title='Distribuição por Idade',
-            color_discrete_sequence=['coral'],
+            title='Distribuição por idade',
+            color_discrete_sequence=[SECONDARY_COLOR],
             labels={'Age': 'Idade', 'count': 'Frequência'}
         )
         fig3.update_layout(height=400, xaxis_title='Idade', yaxis_title='Frequência')
@@ -234,23 +219,23 @@ with tab1:
             df_ordered,
             x='Obesidade_PT',
             y='Weight',
-            title='Distribuição de Peso por Nível de Obesidade',
+            title='Distribuição de peso por nível de obesidade',
             color='Obesidade_PT',
-            color_discrete_sequence=px.colors.qualitative.Set3
+            color_discrete_sequence=get_color_palette(df_ordered['Obesidade_PT'].nunique())
         )
         fig4.update_layout(showlegend=False, height=400, xaxis_title='Nível de Obesidade', yaxis_title='Peso (kg)')
         fig4.update_xaxes(tickangle=45)
         st.plotly_chart(fig4, use_container_width=True)
 
 with tab2:
-    st.header("Análise de Correlações")
+    st.header("Análise de correlações")
     
     # Matriz de correlação
     numeric_cols = df_filtered.select_dtypes(include=[np.number]).columns
     corr_matrix = df_filtered[numeric_cols].corr()
     
     # Rename columns and index to Portuguese
-    corr_matrix_pt = corr_matrix.rename(columns=get_variable_name, index=get_variable_name)
+    corr_matrix_pt = corr_matrix.rename(columns=translate_variable, index=translate_variable)
     
     fig5 = px.imshow(
         corr_matrix_pt,
@@ -274,8 +259,8 @@ with tab2:
             x='Height',
             y='Weight',
             color='Obesidade',
-            title='Peso vs Altura por Nível de Obesidade',
-            color_discrete_sequence=px.colors.qualitative.Set2,
+            title='Peso vs altura por nível de obesidade',
+            color_discrete_sequence=get_color_palette(df_scatter['Obesidade'].nunique()),
             hover_data=['Age', 'BMI'],
             labels={'Height': 'Altura (m)', 'Weight': 'Peso (kg)', 'Age': 'Idade', 'BMI': 'IMC'}
         )
@@ -291,8 +276,8 @@ with tab2:
             x='Age',
             y='BMI',
             color='Obesidade',
-            title='IMC vs Idade por Nível de Obesidade',
-            color_discrete_sequence=px.colors.qualitative.Set2,
+            title='IMC vs idade por nível de obesidade',
+            color_discrete_sequence=get_color_palette(df_scatter2['Obesidade'].nunique()),
             hover_data=['Weight', 'Height'],
             labels={'Age': 'Idade', 'BMI': 'IMC', 'Weight': 'Peso (kg)', 'Height': 'Altura (m)'}
         )
@@ -300,7 +285,7 @@ with tab2:
         st.plotly_chart(fig7, use_container_width=True)
 
 with tab3:
-    st.header("Análise Demográfica")
+    st.header("Análise demográfica")
     
     col1, col2 = st.columns(2)
     
@@ -312,11 +297,13 @@ with tab3:
         gender_obesity = pd.crosstab(df_gender['Gênero'], df_gender['Obesidade'], normalize='index') * 100
         
         fig8 = go.Figure()
-        for col in gender_obesity.columns:
+        palette_gender = get_color_palette(len(gender_obesity.columns))
+        for i, col in enumerate(gender_obesity.columns):
             fig8.add_trace(go.Bar(
                 name=col,
                 x=gender_obesity.index,
                 y=gender_obesity[col],
+                marker_color=palette_gender[i],
                 text=gender_obesity[col].apply(lambda x: f'{x:.1f}%'),
                 textposition='auto'
             ))
@@ -338,11 +325,13 @@ with tab3:
         family_obesity = pd.crosstab(df_family['Histórico Familiar'], df_family['Obesidade'], normalize='index') * 100
         
         fig9 = go.Figure()
-        for col in family_obesity.columns:
+        palette_family = get_color_palette(len(family_obesity.columns))
+        for i, col in enumerate(family_obesity.columns):
             fig9.add_trace(go.Bar(
                 name=col,
                 x=family_obesity.index,
                 y=family_obesity[col],
+                marker_color=palette_family[i],
                 text=family_obesity[col].apply(lambda x: f'{x:.1f}%'),
                 textposition='auto'
             ))
@@ -369,24 +358,29 @@ with tab3:
     
     fig10 = px.bar(
         age_obesity,
-        title='Distribuição de Obesidade por Faixa Etária (%)',
+        title='Distribuição de obesidade por faixa etária (%)',
         barmode='stack',
-        color_discrete_sequence=px.colors.qualitative.Pastel,
+        color_discrete_sequence=get_color_palette(age_obesity.shape[1]),
         labels={'value': 'Percentual (%)', 'variable': 'Nível de Obesidade', 'Faixa Etária': 'Faixa Etária'}
     )
     fig10.update_layout(height=400)
     st.plotly_chart(fig10, use_container_width=True)
 
 with tab4:
-    st.header("Hábitos de Vida e Comportamento")
+    st.header("Hábitos de vida e comportamento")
     
     col1, col2 = st.columns(2)
     
     with col1:
         # Atividade física
         faf_obesity = df_filtered.groupby('Obesity')['FAF'].mean().reset_index()
-        faf_obesity.columns = ['Obesidade', 'Frequência Média']
-        
+        faf_obesity.columns = ['Obesidade_Cod', 'Frequência Média']
+        faf_obesity['Obesidade'] = faf_obesity['Obesidade_Cod'].apply(get_obesity_label)
+        faf_obesity['Obesity_Order'] = faf_obesity['Obesidade_Cod'].apply(
+            lambda x: OBESITY_ORDER.index(x) if x in OBESITY_ORDER else 999
+        )
+        faf_obesity = faf_obesity.sort_values('Obesity_Order')
+
         fig11 = px.bar(
             faf_obesity,
             x='Obesidade',
@@ -405,8 +399,13 @@ with tab4:
     with col2:
         # Consumo de água
         ch2o_obesity = df_filtered.groupby('Obesity')['CH2O'].mean().reset_index()
-        ch2o_obesity.columns = ['Obesidade', 'Consumo Médio']
-        
+        ch2o_obesity.columns = ['Obesidade_Cod', 'Consumo Médio']
+        ch2o_obesity['Obesidade'] = ch2o_obesity['Obesidade_Cod'].apply(get_obesity_label)
+        ch2o_obesity['Obesity_Order'] = ch2o_obesity['Obesidade_Cod'].apply(
+            lambda x: OBESITY_ORDER.index(x) if x in OBESITY_ORDER else 999
+        )
+        ch2o_obesity = ch2o_obesity.sort_values('Obesity_Order')
+
         fig12 = px.bar(
             ch2o_obesity,
             x='Obesidade',
@@ -429,14 +428,20 @@ with tab4:
         df_favc = df_filtered.copy()
         df_favc['Alimentos Calóricos'] = df_favc['FAVC'].apply(translate_value)
         df_favc['Obesidade'] = df_favc['Obesity'].apply(get_obesity_label)
-        favc_obesity = pd.crosstab(df_favc['Alimentos Calóricos'], df_favc['Obesidade'], normalize='index') * 100
+        favc_obesity = pd.crosstab(df_favc['Alimentos Calóricos'], df_favc['Obesity'], normalize='index') * 100
+
+        # Ordenar colunas de obesidade conforme OBESITY_ORDER e garantir rótulos em português
+        obesity_cols_ordered = [get_obesity_label(x) for x in OBESITY_ORDER if get_obesity_label(x) in favc_obesity.columns]
+        favc_obesity = favc_obesity[obesity_cols_ordered]
         
         fig13 = go.Figure()
-        for col in favc_obesity.columns:
+        palette_favc = get_color_palette(len(favc_obesity.columns))
+        for i, col in enumerate(favc_obesity.columns):
             fig13.add_trace(go.Bar(
                 name=col,
                 x=favc_obesity.index,
                 y=favc_obesity[col],
+                marker_color=palette_favc[i],
                 text=favc_obesity[col].apply(lambda x: f'{x:.1f}%'),
                 textposition='auto'
             ))
@@ -462,10 +467,89 @@ with tab4:
             path=['Transporte', 'Obesidade'],
             values='Quantidade',
             title='Meio de Transporte por Nível de Obesidade',
-            color_discrete_sequence=px.colors.qualitative.Pastel
+            color_discrete_sequence=get_color_palette(mtrans_counts['Transporte'].nunique())
         )
         fig14.update_layout(height=400)
         st.plotly_chart(fig14, use_container_width=True)
+
+with tab5:
+    st.header("Desempenho do modelo de ML")
+
+    if metrics:
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.metric("Modelo utilizado", metrics['model_name'])
+        with col2:
+            accuracy = metrics['accuracy'] * 100
+            st.metric("Acurácia", f"{accuracy:.2f}%")
+
+        if 'results_df' in metrics:
+            with st.expander("Ver comparação detalhada de modelos"):
+                st.dataframe(metrics['results_df'], use_container_width=True)
+    else:
+        st.info("Métricas do modelo não disponíveis nesta sessão.")
+
+    st.markdown("---")
+    st.subheader("Risco de obesidade por nível de atividade física")
+
+    # Análise adicional: taxa de obesidade por faixa de FAF
+    faf_risk_df = df_filtered.copy()
+    faf_risk_df['Faixa_FAF'] = pd.cut(
+        faf_risk_df['FAF'],
+        bins=[-0.1, 0, 1, 2, faf_risk_df['FAF'].max() + 0.1],
+        labels=['0 dias/sem', '0-1 dia/sem', '1-2 dias/sem', '≥2 dias/sem']
+    )
+
+    obesity_by_faf = (
+        faf_risk_df
+        .assign(Obeso=faf_risk_df['Obesity'].str.contains('Obesity'))
+        .groupby('Faixa_FAF')['Obeso']
+        .mean()
+        .reset_index()
+    )
+    obesity_by_faf['Taxa_Obesidade_%'] = obesity_by_faf['Obeso'] * 100
+
+    fig_faf = px.bar(
+        obesity_by_faf,
+        x='Faixa_FAF',
+        y='Taxa_Obesidade_%',
+        title='Taxa de obesidade por frequência de atividade física',
+        color='Taxa_Obesidade_%',
+        color_continuous_scale='Reds',
+        labels={
+            'Faixa_FAF': 'Frequência de atividade física (FAF)',
+            'Taxa_Obesidade_%': 'Taxa de obesidade (%)'
+        },
+        text='Taxa_Obesidade_%'
+    )
+    fig_faf.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
+    fig_faf.update_layout(showlegend=False, height=420, margin=dict(t=80, b=80))
+    st.plotly_chart(fig_faf, use_container_width=True)
+
+    # Texto interpretativo simples
+    try:
+        low_activity_rate = obesity_by_faf.loc[obesity_by_faf['Faixa_FAF'] == '0 dias/sem', 'Taxa_Obesidade_%'].iloc[0]
+    except IndexError:
+        low_activity_rate = np.nan
+
+    try:
+        high_activity_rate = obesity_by_faf.loc[obesity_by_faf['Faixa_FAF'] == '≥2 dias/sem', 'Taxa_Obesidade_%'].iloc[0]
+    except IndexError:
+        high_activity_rate = np.nan
+
+    if not np.isnan(low_activity_rate) and not np.isnan(high_activity_rate):
+        diff_rate = low_activity_rate - high_activity_rate
+        st.markdown(
+            f"Em média, pacientes sem atividade física apresentam taxa de obesidade de **{low_activity_rate:.1f}%**, "
+            f"enquanto aqueles com **2 ou mais dias de atividade física por semana** têm cerca de **{high_activity_rate:.1f}%**. "
+            f"Isso representa uma diferença aproximada de **{diff_rate:.1f} pontos percentuais** na taxa de obesidade entre os grupos."
+        )
+    else:
+        st.markdown(
+            "As faixas de atividade física atuais não permitem comparar claramente as taxas de obesidade entre grupos. "
+            "Ajuste os filtros à esquerda para visualizar melhor esse efeito."
+        )
 
 # Insights e Recomendações
 st.markdown("---")

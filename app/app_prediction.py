@@ -54,8 +54,8 @@ def load_model_artifacts():
 model, label_encoders, target_encoder, scaler, feature_names, metrics = load_model_artifacts()
 
 # Título e descrição
-st.title("🏥 Preditor de Níveis de Obesidade")
-st.markdown("### Sistema de Classificação de Obesidade baseado em Machine Learning")
+st.title("Preditor de níveis de obesidade")
+st.markdown("### Sistema de classificação de obesidade baseado em machine learning")
 st.markdown("---")
 
 # Verificar se o modelo foi carregado
@@ -64,7 +64,7 @@ if model is None:
     st.stop()
 
 # Sidebar para entrada de dados
-st.sidebar.header("📝 Dados do Paciente")
+st.sidebar.header("Dados do paciente")
 st.sidebar.markdown("Preencha as informações abaixo:")
 
 # Criar formulário de entrada
@@ -75,7 +75,7 @@ with st.sidebar.form("patient_form"):
                          format_func=lambda x: translate_value(x))
     age = st.number_input(translate_variable("Age"), min_value=10, max_value=100, value=25)
     height = st.number_input(translate_variable("Height"), min_value=1.0, max_value=2.5, value=1.70, step=0.01)
-    weight = st.number_input(translate_variable("Weight"), min_value=30.0, max_value=200.0, value=70.0, step=0.5)
+    weight = st.number_input(translate_variable("Weight"), min_value=30.0, max_value=350.0, value=70.0, step=0.5)
     
     st.subheader("Histórico e Hábitos")
     
@@ -129,7 +129,7 @@ with st.sidebar.form("patient_form"):
                          ["Automobile", "Bike", "Motorbike", "Public_Transportation", "Walking"],
                          format_func=lambda x: translate_value(x))
     
-    submit_button = st.form_submit_button("🔍 Fazer Predição")
+    submit_button = st.form_submit_button("Fazer predição")
 
 # Processar predição quando o botão for clicado
 if submit_button:
@@ -138,27 +138,27 @@ if submit_button:
     
     # Validar altura
     if height < 1.2 or height > 2.3:
-        validation_errors.append("⚠️ Altura deve estar entre 1.20m e 2.30m")
+        validation_errors.append("Altura deve estar entre 1.20m e 2.30m.")
     
     # Validar peso
     if weight < 30 or weight > 300:
-        validation_errors.append("⚠️ Peso deve estar entre 30kg e 300kg")
+        validation_errors.append("Peso deve estar entre 30kg e 300kg.")
     
     # Validar idade
     if age < 10 or age > 120:
-        validation_errors.append("⚠️ Idade deve estar entre 10 e 120 anos")
+        validation_errors.append("Idade deve estar entre 10 e 120 anos.")
     
     # Validar IMC extremo
     bmi = weight / (height ** 2)
     if bmi < 10 or bmi > 80:
-        validation_errors.append(f"⚠️ IMC calculado ({bmi:.1f}) está fora do intervalo esperado (10-80)")
+        validation_errors.append(f"IMC calculado ({bmi:.1f}) está fora do intervalo esperado (10-80).")
     
     # Se houver erros, exibir e parar
     if validation_errors:
-        st.error("❌ **Erros de Validação:**")
+        st.error("Erros de validação nos dados informados:")
         for error in validation_errors:
             st.warning(error)
-        st.info("💡 Por favor, verifique os valores inseridos e tente novamente.")
+        st.info("Por favor, verifique os valores inseridos e tente novamente.")
         st.stop()
     
     try:
@@ -214,12 +214,12 @@ if submit_button:
         
         # Exibir resultados
         st.markdown("---")
-        st.header("📊 Resultado da Predição")
+        st.header("Resultado da predição")
         
         col1, col2 = st.columns([1, 2])
         
         with col1:
-            st.subheader("🎯 Classificação")
+            st.subheader("Classificação")
             
             # Definir cor baseada na classificação (cores padronizadas)
             colors_gradient = get_color_palette(7)
@@ -247,7 +247,7 @@ if submit_button:
                 st.error("IMC indica obesidade")
         
         with col2:
-            st.subheader("📈 Probabilidades por Classe")
+            st.subheader("Probabilidades por classe")
             
             # Criar DataFrame de probabilidades (com tradução)
             classes = target_encoder.classes_
@@ -292,69 +292,89 @@ if submit_button:
         
         # Recomendações
         st.markdown("---")
-        st.header("💡 Recomendações")
+        st.header("Recomendações")
         
-        recommendations = {
-            'Insufficient_Weight': [
-                "🍽️ Consulte um nutricionista para desenvolver um plano alimentar adequado",
-                "💪 Considere exercícios de fortalecimento muscular",
-                "🏥 Realize exames médicos para verificar possíveis causas subjacentes"
-            ],
-            'Normal_Weight': [
-                "✅ Mantenha hábitos alimentares saudáveis",
-                "🏃 Continue com atividades físicas regulares",
-                "🥗 Mantenha dieta balanceada e variada"
-            ],
-            'Overweight_Level_I': [
-                "⚠️ Aumente a frequência de atividades físicas",
-                "🥗 Reduza o consumo de alimentos processados e açúcares",
-                "💧 Aumente o consumo de água",
-                "👨‍⚕️ Considere consultar um nutricionista"
-            ],
-            'Overweight_Level_II': [
-                "⚠️ Importante: consulte um profissional de saúde",
-                "🏃 Inicie programa de atividades físicas regulares",
-                "🥗 Revise completamente seus hábitos alimentares",
-                "📊 Monitore regularmente seu peso e IMC"
-            ],
-            'Obesity_Type_I': [
-                "🚨 Consulta médica é altamente recomendada",
-                "🏥 Avalie riscos de comorbidades (diabetes, hipertensão, etc.)",
-                "💪 Inicie programa de exercícios sob supervisão",
-                "🍽️ Plano nutricional profissional é essencial"
-            ],
-            'Obesity_Type_II': [
-                "🚨 Atenção: consulta médica urgente recomendada",
-                "🏥 Avaliação completa de saúde necessária",
-                "👨‍⚕️ Acompanhamento multidisciplinar (médico, nutricionista, educador físico)",
-                "📊 Monitoramento regular de saúde é crucial"
-            ],
-            'Obesity_Type_III': [
-                "🚨 URGENTE: procure assistência médica imediatamente",
-                "🏥 Avaliação médica completa é essencial",
-                "👥 Tratamento multidisciplinar intensivo necessário",
-                "⚕️ Considere opções de tratamento especializado"
-            ]
-        }
+        # Gerar recomendações personalizadas baseadas nos comportamentos reais
+        personalized_recommendations = []
         
-        if predicted_class in recommendations:
-            for rec in recommendations[predicted_class]:
-                st.markdown(f"- {rec}")
+        # Análise de atividade física
+        if faf == 0:
+            personalized_recommendations.append("Você não pratica atividade física. Inicie com caminhadas leves de 20-30 minutos, 3 vezes por semana.")
+        elif faf < 2:
+            personalized_recommendations.append("Aumente a frequência de atividades físicas para pelo menos 3 a 4 dias por semana.")
+        else:
+            personalized_recommendations.append("Mantenha suas atividades físicas regulares.")
+        
+        # Análise de alimentação calórica
+        if favc == 'yes':
+            personalized_recommendations.append("Reduza o consumo frequente de alimentos muito calóricos (frituras, doces, fast food).")
+        else:
+            personalized_recommendations.append("Continue evitando alimentos altamente calóricos.")
+        
+        # Análise de consumo de vegetais
+        if fcvc == 1:  # Raramente
+            personalized_recommendations.append("Inclua vegetais em pelo menos duas refeições por dia. Comece com saladas simples.")
+        elif fcvc == 2:  # Às vezes
+            personalized_recommendations.append("Aumente o consumo de vegetais para todas as refeições principais.")
+        else:
+            personalized_recommendations.append("Seu consumo de vegetais está adequado. Mantenha a variedade.")
+        
+        # Análise de água
+        if ch2o == 1:  # < 1 litro
+            personalized_recommendations.append("Aumente o consumo de água para pelo menos 2 litros por dia.")
+        elif ch2o == 2:  # 1-2 litros
+            personalized_recommendations.append("Tente aumentar o consumo de água para cerca de 2 a 3 litros por dia.")
+        
+        # Análise de histórico familiar
+        if family_history == 'yes':
+            personalized_recommendations.append("Devido ao histórico familiar, faça acompanhamento médico preventivo regular.")
+        
+        # Análise de álcool
+        if calc == 'Frequently':
+            personalized_recommendations.append("Reduza o consumo de álcool para ocasiões especiais (no máximo 1 a 2 vezes por semana).")
+        elif calc == 'Sometimes':
+            personalized_recommendations.append("Monitore o consumo de álcool, mantendo moderação.")
+        
+        # Análise de tempo em telas
+        if tue > 2:
+            personalized_recommendations.append("Reduza o tempo em telas/dispositivos e substitua parte dele por atividades físicas.")
+        
+        # Recomendação baseada no transporte
+        if mtrans in ['Automobile', 'Motorbike']:
+            personalized_recommendations.append("Sempre que possível, substitua transporte motorizado por caminhada ou bicicleta.")
+        elif mtrans == 'Public_Transportation':
+            personalized_recommendations.append("Continue usando transporte público, que costuma estar associado a maior deslocamento a pé.")
+        
+        # Recomendações gerais baseadas no nível de obesidade
+        if predicted_class in ['Obesity_Type_II', 'Obesity_Type_III']:
+            personalized_recommendations.insert(0, "Procure acompanhamento médico especializado o quanto antes.")
+            personalized_recommendations.append("Um tratamento multidisciplinar (médico, nutricionista, educador físico) costuma ser recomendado.")
+        elif predicted_class == 'Obesity_Type_I':
+            personalized_recommendations.insert(0, "Consulte um profissional de saúde para avaliação mais detalhada.")
+            personalized_recommendations.append("Monitore seu peso e IMC com regularidade.")
+        elif predicted_class in ['Overweight_Level_I', 'Overweight_Level_II']:
+            personalized_recommendations.append("Considere consultar um nutricionista para orientação personalizada.")
+        elif predicted_class == 'Insufficient_Weight':
+            personalized_recommendations.insert(0, "Consulte um médico para avaliar possíveis causas do baixo peso.")
+        
+        # Exibir recomendações
+        for rec in personalized_recommendations:
+            st.markdown(f"- {rec}")
         
         # Informações adicionais
         st.markdown("---")
         
         # Informações do modelo (expandível)
-        with st.expander("ℹ️ Sobre o Modelo"):
+        with st.expander("Sobre o modelo"):
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.metric("🎯 Algoritmo", metrics['model_name'] if metrics else "Random Forest")
+                st.metric("Algoritmo", metrics['model_name'] if metrics else "Random Forest")
             with col2:
-                st.metric("📊 Acurácia", f"{metrics['accuracy']*100:.2f}%" if metrics else "99.05%")
+                st.metric("Acurácia", f"{metrics['accuracy']*100:.2f}%" if metrics else "99.05%")
             with col3:
-                st.metric("🏆 Validação", "5-Fold CV")
+                st.metric("Validação", "5-Fold CV")
         
-        st.info("ℹ️ **Nota:** Este sistema é uma ferramenta de apoio à decisão. Sempre consulte profissionais de saúde qualificados para diagnóstico e tratamento adequados.")
+        st.info("Este sistema é uma ferramenta de apoio à decisão e não substitui a avaliação individualizada por profissionais de saúde qualificados.")
         
     except Exception as e:
         st.error(f"❌ Erro ao processar predição: {e}")
