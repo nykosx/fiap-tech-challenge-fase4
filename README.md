@@ -1,10 +1,16 @@
-# Tech Challenge Fase 4: Predição de Níveis de Obesidade
+# Predição de Níveis de Obesidade - Tech Challenge Fase 4
 
-## Status do projeto
-**Projeto completo - pronto para uso e avaliação**
+**Status:** Projeto Finalizado e Avaliado com Nota Máxima (90/90).
 
-## Objetivo principal
-Desenvolver um modelo de Machine Learning (Classificação Multiclasse) para prever os níveis de obesidade de pacientes. A solução deve atingir mais de **75% de acurácia** e ser entregue com uma aplicação preditiva em **Streamlit** e um **Dashboard Analítico** para a equipe médica.
+Este projeto foi desenvolvido como parte do **Pós-Tech em Data Analytics da FIAP**. O objetivo é construir um modelo de classificação multiclasse capaz de prever o nível de obesidade de um indivíduo. Como complemento, foi desenvolvido recomendações com base nas características comportamentais.
+
+**Confira o Dashboard em produção:** [Clique aqui para acessar](https://fiap-tech-challenge-fase4-dashboard.streamlit.app/)
+
+![Print do Dashboard de Predição](dashboard_screenshot.png)
+
+**Confira o Preditor em produção:** [Clique aqui para acessar](https://fiap-tech-challenge-fase4-prediction.streamlit.app/)
+
+![Print do Dashboard de Predição](predict.png)
 
 ## Dataset utilizado
 O projeto utiliza o dataset `Obesity.csv` (2111 registros), focado em dados de hábitos alimentares e histórico de saúde.
